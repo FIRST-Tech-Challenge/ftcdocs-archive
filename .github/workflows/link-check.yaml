@@ -1,0 +1,36 @@
+name: "Link Check"
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */12 * * *'
+    
+jobs:
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository  
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+          cache: 'pip'
+
+      - name: Python Install Dependencies
+        run: pip install -r docs/requirements.txt
+
+      - name: link-check
+        run: make -C docs/ linkcheck SPHINXOPTS="-W --keep-going -n -q"
+
+      - name: Arhive Log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+          ID:  ${{ github.run_attempt }}
+        with:
+          name: LINKCHECK-${{ env.PR_NUMBER }}-${{ env.ID }}
+          path: docs/build/linkcheck/output.txt
+          retention-days: 7
