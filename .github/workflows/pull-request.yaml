@@ -14,7 +14,7 @@ jobs:
         run: sudo apt-get -y update
         
       - name: Install Dependencies
-        run: xargs -a dependencies sudo apt-fast install -y
+        run: xargs -a dependencies sudo apt-get install -y
 
       - name: Python Setup
         uses: actions/setup-python@v4
