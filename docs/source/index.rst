@@ -15,3 +15,4 @@ For the latest documentation, please visit the |text|_.
 
    TensorFlow/index
    ftc_ml/index
+   disable_instant_run/disable-instant-run
